@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-LivestreamApplication<livestream>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.kulvinder.livestream.LivestreamApplication",
+            "projectName": "livestream",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
