@@ -5,9 +5,12 @@ window.addEventListener("load", function () {
     showSnackbar(false, "Login expired: please login again");
     setTimeout(() => {
       this.window.location.assign("../");
-    }, 1000);
+    }, 500);
   }
 });
+
+//variables
+let streamsArray = Array();
 
 //Loading livestream list using REST
 function loadLiveStreams() {
@@ -17,14 +20,21 @@ function loadLiveStreams() {
     {},
     {
       onSuccess(result) {
-        renderLiveStreams(result.data);
-        connectToLiveSocket(); 
+        //streamsArray.push(result.response.data);
+        renderLiveStreams(result.response.data);
+        connectToLiveSocket();
       },
-      onError(error) {},
+      onError(err) {
+        try {
+          showSnackbar(false, err.responseJSON.msg);
+          return;
+        } catch (err) {}
+
+        showSnackbar(false, "something went wrong");
+      },
     }
   );
 }
-
 
 function renderLiveStreams(streams) {
   const container = document.getElementById("live-streams");
@@ -35,67 +45,87 @@ function renderLiveStreams(streams) {
     return;
   }
 
-  streams.forEach(stream => {
-    const card = document.createElement("div");
-    card.classList.add("stream-card");
-
-    card.innerHTML = `
-      <div class="banner"></div>
-      <div class="stream-info">
-        <img src="assets/pfp-default.png" class="pfp" alt="pfp">
-        <span class="username">${stream.username}</span>
-      </div>
-    `;
-
-    // On click → open stream viewer page
-    card.addEventListener("click", () => {
-      window.location.assign("./watch.html?id=" + stream.id);
-    });
-
-    container.appendChild(card);
+  streams.forEach((stream) => {
+    addStreamToList(stream);
   });
 }
 
+function connectToLiveSocket(retryCount = 0) {
+  const socket = new SockJS(LIVESTREAMLIST_SOCKET_URL);
+  const stomp = Stomp.over(socket);
 
-function connectToLiveSocket() {
-  const socket = new WebSocket("ws://localhost:8080/liveStreams");
-
-  socket.onopen = () => console.log("Connected to live updates socket.");
-
-  socket.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    console.log("Update:", data);
-
-    // Examples of backend events
-    if (data.event === "STREAM_STARTED") {
-      addStreamToList(data.stream);
-    } else if (data.event === "STREAM_ENDED") {
-      removeStreamFromList(data.streamId);
+  stomp.connect(
+    {},
+    function () {
+      stomp.subscribe("/updates/streams", function (message) {
+        const stream = JSON.parse(message.body);
+        log("New stream update:", stream);
+        if (stream.active == true) {
+          //stream is active
+          addStreamToList(stream);
+        } else {
+          //stream closed
+          removeStreamFromList(stream.id);
+        }
+      });
+    },
+    function () {
+      if (retryCount < 5) {
+        setTimeout(() => connectToLiveSocket(retryCount + 1), 3000);
+        log("Reconnecting socket... Attempt " + (retryCount + 1));
+      } else {
+        showSnackbar(false, "Failed to reconnect to live updates");
+      }
     }
-  };
-
-  socket.onclose = () => console.log("Socket closed. Reconnecting in 3s...");
-  socket.onerror = (err) => console.error("Socket error:", err);
+  );
 }
 
-
 function addStreamToList(stream) {
+  if (streamExists(stream.id)) {
+    log("stream already added id: " + stream.id);
+    return;
+  }
+
   const container = document.getElementById("live-streams");
   const card = document.createElement("div");
   card.classList.add("stream-card");
+  card.classList.add("card_id_" + stream.id);
+
   card.innerHTML = `
-    <div class="banner"></div>
-    <div class="stream-info">
-      <img src="assets/pfp-default.png" class="pfp" alt="pfp">
-      <span class="username">${stream.username}</span>
-    </div>`;
+      <div class="banner"><img class="banner-img" src="${stream.banner}"></div>
+      <div class="stream-info">
+        <img src="../assets/img/pfp-default.png" class="pfp" alt="pfp">
+        <span class="username">${stream.user.username}</span>
+      </div>
+    `;
+
+  // On click → open stream viewer page
+  card.addEventListener("click", () => {
+    window.location.assign("../watch?id=" + stream.id);
+  });
+
+  streamsArray.push({ id: stream.id, element: card });
   container.appendChild(card);
 }
 
 function removeStreamFromList(streamId) {
-  const container = document.getElementById("live-streams");
-  const cards = container.querySelectorAll(".stream-card");
-  cards.forEach(card => {
-    if (card.dataset.id === streamId) card.remove();
-  });
+  const item = streamsArray.find((i) => i.id === streamId);
+  if (item) {
+    item.element.remove();
+    streamsArray = streamsArray.filter((i) => i.id !== streamId);
+  }
+}
+
+// function streamExists(stream){
+//   if(streamsArray.some(item => item === stream)){
+//     //log("item id"+item.id+"  stream id "+ stream.id);
+//     return true;
+//   }
+
+//   return false;
+
+// }
+
+function streamExists(streamId) {
+  return streamsArray.some((item) => item.id === streamId);
 }

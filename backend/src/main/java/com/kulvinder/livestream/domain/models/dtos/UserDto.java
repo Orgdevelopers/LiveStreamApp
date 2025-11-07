@@ -2,6 +2,8 @@ package com.kulvinder.livestream.domain.models.dtos;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +19,10 @@ public class UserDto {
     private Long id;
 
     private String username;
+
+    @JsonIgnore
     private String password;
+    
     private String profile_pic;
 
     private LocalDateTime updated;

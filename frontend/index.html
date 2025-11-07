@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <html>
   <head>
     <title>LiveStream Project</title>
@@ -67,6 +68,7 @@
   <div id="snackbar">msg</div>
 
   <script src="js/baseScript.js"></script>
+  <script src="js/script.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
   <script>
@@ -83,17 +85,14 @@
           showSnackbar(true, result.msg);
           const user = result.response;
           
-          logOut();
-          setSessionId(user.id);
-          setSessionUser(user);
-          setSessionExpiry(24);
+          authSuccess(user,24,200); //(user_obj, expiry_hours, timout before redirection)
 
         },
         onError: function (error) {
           try {
             showSnackbar(false, error.responseJSON.msg);
             return;
-          } catch (error) {}
+          } catch (err) {}
 
           showSnackbar(false, "something went wrong");
         },
@@ -115,17 +114,14 @@
           showSnackbar(true, result.msg);
           const user = result.response;
 
-          logOut();
-          setSessionId(user.id);
-          setSessionUser(user);
-          setSessionExpiry(24);
+          authSuccess(user,24,200); //(user_obj, expiry_hours, timout before redirection)
 
         },
         onError: function (error) {
           try {
             showSnackbar(false, error.responseJSON.msg);
             return;
-          } catch (error) {
+          } catch (err) {
             
           }
 

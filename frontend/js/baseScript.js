@@ -1,10 +1,13 @@
 //constants
 
-const SERVER_URL = "http://localhost:8080/";
+// const SERVER_URL = "http://localhost:8080/";
+// const LIVESTREAMLIST_SOCKET_URL = "http://localhost:8080/liveStreams"; //at-surgeon.gl.at.ply.gg:36199
+const SERVER_URL = "http://at-surgeon.gl.at.ply.gg:36199/";
+const LIVESTREAMLIST_SOCKET_URL = "http://at-surgeon.gl.at.ply.gg:36199/liveStreams";
+
 const LOGIN_URL = SERVER_URL + "auth/login";
 const SIGNUP_URL = SERVER_URL + "auth/signup";
 const LIVESTREAM_LIST_URL = SERVER_URL + "livestreams/active";
-
 
 //
 const LOGS_ENABLE = true;
@@ -13,40 +16,46 @@ const ERROR_COLOR = "#e23636";
 const WARNING_COLOR = "";
 //
 
-function apiRequest(method,url, formData, respListener) {
+function apiRequest(method, url, formData, respListener) {
   showLoader();
-  $.ajax({
-    type: method,
-    contentType: "application/json",
-    data: JSON.stringify(formData),
-    url: url,
-    success: function (result) {
-      log(result);
-      hideLoader();
-      respListener.onSuccess(result);
-    },
-    error: function (error) {
-      log(error);
-      hideLoader();
+  if (method == "get") {
+    $.ajax({
+      type: method,
+      contentType: "application/json",
+      //data: JSON.stringify(formData),
+      url: url,
+      success: function (result) {
+        log(result);
+        hideLoader();
+        respListener.onSuccess(result);
+      },
+      error: function (error) {
+        log(error);
+        hideLoader();
 
-      respListener.onError(error);
-    },
-  });
+        respListener.onError(error);
+      },
+    });
+  } else {
+    $.ajax({
+      type: method,
+      contentType: "application/json",
+      data: JSON.stringify(formData),
+      url: url,
+      success: function (result) {
+        log(result);
+        hideLoader();
+        respListener.onSuccess(result);
+      },
+      error: function (error) {
+        log(error);
+        hideLoader();
+
+        respListener.onError(error);
+      },
+    });
+  }
 }
-
-window.addEventListener("load", function () {
-  chk.checked = true; // it loads an animation for UI
-  setTimeout(() => {
-    if(validateSession()){
-      if (getSessionId() != null && getSessionUser() != null) {
-        //session has login records
-        this.window.location.assign("./home");
-      }
-    }
-  }, 500);
-});
-
-
 
 function log(msg) {
   if (LOGS_ENABLE) {
@@ -61,40 +70,34 @@ function showSnackbar(success, msg) {
   if (success) {
     //green
     snackbar.style.backgroundColor = SUCCESS_COLOR;
-
-  }else{
+  } else {
     //error
     snackbar.style.backgroundColor = ERROR_COLOR;
-
   }
-  
-  setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3500);
-}
 
+  setTimeout(function () {
+    snackbar.className = snackbar.className.replace("show", "");
+  }, 3500);
+}
 
 //
-function getSessionUser(){
-  const stringUser = sessionStorage.getItem("user");
-  if(stringUser != null){
-    const user = JSON.parse(stringUser);
-    return user;
-  }
 
-  return null;
-}
-
-function getSessionId(){
+function getSessionId() {
   return sessionStorage.getItem("id");
 }
 
 function validateSession() {
-  if (getSessionId() != null && !isSessionExpired()) {
+  if (
+    getSessionId() != null &&
+    getSessionUser() != null &&
+    !isSessionExpired()
+  ) {
     return true;
   }
-  logOut(); // clear expired session
+  log("session not valid while checking");
+  //logOut(); // clear expired session
   return false;
 }
-
 
 function setSessionExpiry(hours = 24) {
   const expiry = Date.now() + hours * 60 * 60 * 1000;
@@ -106,7 +109,6 @@ function isSessionExpired() {
   if (!expiry) return true;
   return Date.now() > Number(expiry);
 }
-
 
 function getSessionUser() {
   const stringUser = sessionStorage.getItem("user");
@@ -120,12 +122,15 @@ function getSessionUser() {
   }
 }
 
-
-function setSessionId(id){
-  sessionStorage.setItem("id",id);
+function setSessionId(id) {
+  sessionStorage.setItem("id", id);
 }
 
-function logOut(){
+function setSessionUser(user) {
+  sessionStorage.setItem("user", JSON.stringify(user));
+}
+
+function logOut() {
   sessionStorage.clear();
   window.location.reload();
 }

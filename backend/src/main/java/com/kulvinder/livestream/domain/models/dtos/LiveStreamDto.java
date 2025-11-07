@@ -2,8 +2,6 @@ package com.kulvinder.livestream.domain.models.dtos;
 
 import java.time.LocalDateTime;
 
-import com.kulvinder.livestream.domain.models.entities.UserEntity;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class LiveStreamDto {
     private Long id;
 
-    private UserEntity user;
+    private UserDto user;
 
     private String banner;
 
