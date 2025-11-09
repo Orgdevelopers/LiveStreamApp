@@ -6,11 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import com.kulvinder.livestream.domain.models.dtos.ChatDto;
 import com.kulvinder.livestream.domain.models.dtos.LiveStreamDto;
 import com.kulvinder.livestream.domain.models.dtos.UserDto;
@@ -25,9 +22,9 @@ import com.kulvinder.livestream.mappers.Mapper;
 @Controller
 public class StreamSocketController {
 
-    // utils
-    @Autowired
-    private SimpMessagingTemplate messagingTemplate;
+    // // utils
+    // @Autowired
+    // private SimpMessagingTemplate messagingTemplate;
     // mappers
     @Autowired
     private Mapper<LiveStreamEntity, LiveStreamDto> liveStreamMapper;
@@ -47,10 +44,12 @@ public class StreamSocketController {
     public void HandleLiveChat(@DestinationVariable Long id, ChatDto sentDto) {
         Optional<LiveStreamEntity> stream = livestreamServices.findById(id);
         Optional<UserEntity> sender = userServices.findById(sentDto.getSender().getId());
+        LiveStreamDto liveStreamDto = liveStreamMapper.MapTo(stream.get());
+
         if (stream.isPresent() && sender.isPresent()) {
             ChatDto chat = ChatDto.builder()
                         .id(id)
-                        .liveStream(liveStreamMapper.MapTo(stream.get()))
+                        .liveStream(liveStreamDto)
                         .sender(userMapper.MapTo(sender.get()))
                         .msg(sentDto.getMsg())
                         .created(LocalDateTime.now())

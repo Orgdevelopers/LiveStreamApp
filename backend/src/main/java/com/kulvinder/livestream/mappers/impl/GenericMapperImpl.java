@@ -1,7 +1,6 @@
 package com.kulvinder.livestream.mappers.impl;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Component;
 
 import com.kulvinder.livestream.mappers.Mapper;
 

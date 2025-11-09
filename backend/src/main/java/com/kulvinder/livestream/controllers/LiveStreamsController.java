@@ -16,11 +16,6 @@ import com.kulvinder.livestream.domain.services.StreamBroadcastService;
 import com.kulvinder.livestream.domain.services.UserServices;
 import com.kulvinder.livestream.mappers.Mapper;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 

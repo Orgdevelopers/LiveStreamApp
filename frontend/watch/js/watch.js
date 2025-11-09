@@ -36,7 +36,11 @@ function connectToLiveSocket(retryCount = 0) {
     function () {
       stomp.subscribe(`/liveStreams/${stream_id}/chat`, function (message) {
         const msg = JSON.parse(message.body);
-        
+        if (msg && msg.liveStream.id == stream_id && msg.sender.id != getSessionId()) {
+          handleServerMsg(msg);
+        }else{
+          log("something wrong");
+        }
         
       });
     },

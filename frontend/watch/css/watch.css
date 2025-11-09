@@ -1,0 +1,160 @@
+body {
+  margin: 0;
+  background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+  font-family: "Jost", sans-serif;
+  overflow: hidden;
+}
+
+/* Outer container mimicking phone aspect ratio */
+.stream-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Video / WebRTC placeholder */
+.video-area {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #111;
+  overflow: hidden;
+}
+
+/* Floating chat overlay */
+/* .chat-overlay {
+  position: absolute;
+  right: 10px;
+  bottom: 80px;
+  width: 40%;
+  max-width: 250px;
+  height: 60%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column-reverse;
+  padding: 10px;
+  color: white;
+  font-size: 14px;
+  pointer-events: none; 
+} 
+
+.chat-msg {
+  background: rgba(0, 0, 0, 0.5);
+  margin: 3px 0;
+  padding: 6px 10px;
+  border-radius: 8px;
+  align-self: flex-end;
+}
+*/
+
+.chat-overlay {
+  position: absolute;
+  right: 10px;
+  bottom: 80px;
+  width: 40%;
+  max-width: 250px;
+  height: 60%;
+  overflow-y: auto;
+  overflow-x: hidden;        /* prevent horizontal scrolling */
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  color: white;
+  font-size: 14px;
+  scrollbar-width: thin;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+/* chat message bubble */
+.chat-msg {
+  background: rgba(0, 0, 0, 0.5);
+  margin: 6px 0;
+  padding: 6px 10px;
+  border-radius: 8px;
+  align-self: flex-start;
+  pointer-events: auto;
+
+  /* text wrapping rules */
+  max-width: 100%;           /* never exceed container width */
+  white-space: pre-wrap;     /* preserve user newlines, but wrap lines */
+  word-wrap: break-word;     /* legacy support */
+  overflow-wrap: anywhere;   /* modern way to break long words */
+  word-break: break-word;    /* break long words if necessary */
+  hyphens: auto;             /* add hyphens when allowed (optional) */
+  box-sizing: border-box;
+}
+
+/* optionally make very long single-line messages less aggressive */
+.chat-msg.long {
+  /* smaller font, or truncated preview — optional */
+  /* font-size: 13px; */
+}
+
+
+/* Vertical control buttons */
+.controls {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.control-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  font-size: 20px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.control-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Chat input popup */
+.chat-input-container {
+  position: absolute;
+  bottom: -60px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  box-sizing: border-box;
+  transition: bottom 0.3s;
+}
+
+.chat-input-container.active {
+  bottom: 0;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
+
+.chat-send {
+  background: #1e90ff;
+  border: none;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 20px;
+  margin-left: 8px;
+  cursor: pointer;
+}

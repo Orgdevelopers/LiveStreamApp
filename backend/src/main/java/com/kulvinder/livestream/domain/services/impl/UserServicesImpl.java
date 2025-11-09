@@ -8,11 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.kulvinder.livestream.config.Constants;
-import com.kulvinder.livestream.domain.models.dtos.UserDto;
 import com.kulvinder.livestream.domain.models.entities.UserEntity;
 import com.kulvinder.livestream.domain.repositories.UserRepository;
 import com.kulvinder.livestream.domain.services.UserServices;
-import com.kulvinder.livestream.mappers.Mapper;
 
 @Service
 public class UserServicesImpl implements UserServices{

@@ -9,8 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.kulvinder.livestream.controllers.StreamSocketController;
-import com.kulvinder.livestream.domain.models.dtos.LiveStreamDto;
 import com.kulvinder.livestream.domain.models.entities.LiveStreamEntity;
 import com.kulvinder.livestream.domain.models.entities.UserEntity;
 import com.kulvinder.livestream.domain.repositories.LiveStreamRepository;

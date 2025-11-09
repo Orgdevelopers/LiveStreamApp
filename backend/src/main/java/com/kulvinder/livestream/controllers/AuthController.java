@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kulvinder.livestream.beans.ApiResponse;
 import com.kulvinder.livestream.beans.ResponseFactory;
+import com.kulvinder.livestream.domain.models.dtos.UserAuthDto;
 import com.kulvinder.livestream.domain.models.dtos.UserDto;
 import com.kulvinder.livestream.domain.models.entities.UserEntity;
 import com.kulvinder.livestream.domain.services.UserServices;
@@ -33,7 +34,7 @@ public class AuthController {
     private PasswordEncoder encoder;
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<UserDto>> login(@RequestBody UserDto userDto) {
+    public ResponseEntity<ApiResponse<UserDto>> login(@RequestBody UserAuthDto userDto) {
 
         if (userDto == null || userDto.getUsername() == null || userDto.getPassword() == null) {
             return ResponseFactory.invalidRequest("Invalid request parameters");
@@ -55,7 +56,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse<UserDto>> signup(@RequestBody UserDto userDto) {
+    public ResponseEntity<ApiResponse<UserDto>> signup(@RequestBody UserAuthDto userDto) {
         if (userDto == null) {
             return ResponseFactory.invalidRequest("invalid request parameters");
         }
@@ -67,7 +68,7 @@ public class AuthController {
         //encrypt password
         userDto.setPassword(encoder.encode(userDto.getPassword()));
 
-        UserEntity user = userServices.createUser(mapper.MapFrom(userDto));
+        UserEntity user = userServices.createUser(UserEntity.builder().username(userDto.getUsername()).password(userDto.getPassword()).build());
 
         return ResponseFactory.from(mapper.MapTo(user), "registration successful");
 

@@ -1,16 +1,44 @@
 <!DOCTYPE html>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Live Stream</title>
     <link rel="stylesheet" href="css/watch.css" />
   </head>
 
-  <body></body>
+  <body>
+    <div class="stream-container">
+      <div class="video-area" id="videoArea"></div>
+
+      <div class="chat-overlay" id="chatOverlay">
+        <!-- Messages will appear here -->
+      </div>
+
+      <div class="controls">
+        <button class="control-btn" id="micBtn">🎤</button>
+        <button class="control-btn" id="camBtn">🎥</button>
+        <button class="control-btn" id="endBtn">⛔</button>
+        <button class="control-btn" id="chatBtn">💬</button>
+      </div>
+
+      <div class="chat-input-container" id="chatInputContainer">
+        <input
+          type="text"
+          class="chat-input"
+          id="chatInput"
+          placeholder="Type a message..."
+        />
+        <button class="chat-send" id="sendChatBtn">Send</button>
+      </div>
+    </div>
+  </body>
 
   <footer>
     <script src="js/watch.js"></script>
     <script src="../js/baseScript.js"></script>
+    <script src="js/stream_controller.js"></script>
     <!-- socket and stomp impl -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
