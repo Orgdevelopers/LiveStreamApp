@@ -41,6 +41,9 @@ public class LiveStreamEntity {
     @Column(name = "ended")
     private LocalDateTime ended;
 
+    @Column(name = "viewer_count")
+    private Integer viewerCount;
+
     @CreationTimestamp
     @Column(name = "created", updatable = false)
     private LocalDateTime created;

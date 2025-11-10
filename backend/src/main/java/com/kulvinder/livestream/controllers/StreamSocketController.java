@@ -63,4 +63,30 @@ public class StreamSocketController {
 
     }
 
+    // Handle viewer join event
+    @MessageMapping("/liveStreams/{id}/join")
+    public void handleViewerJoin(@DestinationVariable Long id, UserDto userDto) {
+        Optional<LiveStreamEntity> streamOpt = livestreamServices.findById(id);
+        if (streamOpt.isPresent() && streamOpt.get().getActive()) {
+            LiveStreamEntity updatedStream = livestreamServices.incrementViewerCount(id);
+            if (updatedStream != null) {
+                // Viewer count update is already broadcasted in the service
+                System.out.println("Viewer joined stream " + id + ". New count: " + updatedStream.getViewerCount());
+            }
+        }
+    }
+
+    // Handle viewer leave event
+    @MessageMapping("/liveStreams/{id}/leave")
+    public void handleViewerLeave(@DestinationVariable Long id, UserDto userDto) {
+        Optional<LiveStreamEntity> streamOpt = livestreamServices.findById(id);
+        if (streamOpt.isPresent()) {
+            LiveStreamEntity updatedStream = livestreamServices.decrementViewerCount(id);
+            if (updatedStream != null) {
+                // Viewer count update is already broadcasted in the service
+                System.out.println("Viewer left stream " + id + ". New count: " + updatedStream.getViewerCount());
+            }
+        }
+    }
+
 }

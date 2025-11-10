@@ -81,7 +81,7 @@ public class LiveStreamsController {
             return ResponseFactory.notFound("user not found");
         }
 
-        LiveStreamEntity entity = streamServices.create(LiveStreamEntity.builder().user(user.get()).active(true).banner("https://picsum.photos/400/600?id="+new Random().nextInt(10000)).build());
+        LiveStreamEntity entity = streamServices.create(LiveStreamEntity.builder().user(user.get()).active(true).viewerCount(0).banner("https://picsum.photos/400/600?id="+new Random().nextInt(10000)).build());
         //send stream update to socket
         streamBroadcastService.broadcastStreamUpdate(entity);
 

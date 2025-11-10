@@ -25,6 +25,21 @@ body {
   overflow: hidden;
 }
 
+/* Viewer count display */
+.viewer-count {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 10;
+  backdrop-filter: blur(5px);
+}
+
 /* Floating chat overlay */
 /* .chat-overlay {
   position: absolute;
@@ -157,4 +172,40 @@ body {
   border-radius: 20px;
   margin-left: 8px;
   cursor: pointer;
+}
+
+.chat-message {
+  background: rgba(0, 0, 0, 0.5);
+  margin: 3px 0;
+  padding: 6px 10px;
+  border-radius: 8px;
+  align-self: flex-start;
+  max-width: 100%;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+  box-sizing: border-box;
+  pointer-events: auto;
+}
+
+.chat-message .sender {
+  font-weight: bold;
+  margin-right: 5px;
+  color: #1e90ff;
+}
+
+.chat-notification {
+  background: rgba(0, 0, 0, 0.3);
+  color: #aaa;
+  font-style: italic;
+  font-size: 12px;
+  text-align: center;
+  margin: 5px 0;
+  padding: 4px;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+  pointer-events: none;
 }

@@ -5,7 +5,7 @@ window.addEventListener("load", function () {
     //session is valid redirect user to homepage
     showSnackbar(true, "Login detected");
     setTimeout(() => {
-      this.window.location.assign("/home");
+      this.window.location.assign("home/");
     }, 200);
 
     return;
@@ -18,6 +18,6 @@ function authSuccess(user, expiry, timout) {
   setSessionUser(user);
   setSessionExpiry(expiry);
   setTimeout(() => {
-    window.location.assign("/home");
+    window.location.assign("home/");
   }, timout);
 }

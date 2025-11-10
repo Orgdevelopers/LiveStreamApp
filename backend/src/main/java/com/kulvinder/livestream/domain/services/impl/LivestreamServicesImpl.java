@@ -63,6 +63,7 @@ public class LivestreamServicesImpl implements LivestreamServices {
         LiveStreamEntity stream = new LiveStreamEntity();
         stream.setUser(user);
         stream.setActive(true);
+        stream.setViewerCount(0);
         stream.setCreated(LocalDateTime.now());
         repository.save(stream);
 
@@ -85,6 +86,45 @@ public class LivestreamServicesImpl implements LivestreamServices {
 
         streamBroadcastService.broadcastStreamUpdate(entity);
         return repository.save(entity);
+    }
+
+    @Override
+    public LiveStreamEntity incrementViewerCount(Long streamId) {
+        Optional<LiveStreamEntity> streamOpt = findById(streamId);
+        if (!streamOpt.isPresent()) {
+            return null;
+        }
+
+        LiveStreamEntity stream = streamOpt.get();
+        if (stream.getViewerCount() == null) {
+            stream.setViewerCount(0);
+        }
+        stream.setViewerCount(stream.getViewerCount() + 1);
+        LiveStreamEntity updated = repository.save(stream);
+        
+        // Broadcast the updated viewer count
+        streamBroadcastService.broadcastStreamUpdate(updated);
+        return updated;
+    }
+
+    @Override
+    public LiveStreamEntity decrementViewerCount(Long streamId) {
+        Optional<LiveStreamEntity> streamOpt = findById(streamId);
+        if (!streamOpt.isPresent()) {
+            return null;
+        }
+
+        LiveStreamEntity stream = streamOpt.get();
+        if (stream.getViewerCount() == null || stream.getViewerCount() <= 0) {
+            stream.setViewerCount(0);
+        } else {
+            stream.setViewerCount(stream.getViewerCount() - 1);
+        }
+        LiveStreamEntity updated = repository.save(stream);
+        
+        // Broadcast the updated viewer count
+        streamBroadcastService.broadcastStreamUpdate(updated);
+        return updated;
     }
 
 }

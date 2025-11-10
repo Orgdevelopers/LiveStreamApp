@@ -29,4 +29,8 @@ public class StreamBroadcastService {
     public void broadcastChatMessage(Long streamId, ChatDto msg) {
         messagingTemplate.convertAndSend("/liveStreams/" + streamId + "/chat", msg);
     }
+
+    public <T> void convertAndSend(String destination, T payload){
+        messagingTemplate.convertAndSend(destination, payload);
+    }
 }

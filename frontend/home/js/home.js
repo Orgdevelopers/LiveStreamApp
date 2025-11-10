@@ -62,7 +62,13 @@ function connectToLiveSocket(retryCount = 0) {
         log("New stream update:", stream);
         if (stream.active == true) {
           //stream is active
-          addStreamToList(stream);
+          if (streamExists(stream.id)) {
+            // Update existing stream (e.g., viewer count)
+            updateStreamInList(stream);
+          } else {
+            // New stream
+            addStreamToList(stream);
+          }
         } else {
           //stream closed
           removeStreamFromList(stream.id);
@@ -91,12 +97,14 @@ function addStreamToList(stream) {
   card.classList.add("stream-card");
   card.classList.add("card_id_" + stream.id);
 
+  const viewerCount = stream.viewerCount || 0;
   card.innerHTML = `
       <div class="banner"><img class="banner-img" src="${stream.banner}"></div>
       <div class="stream-info">
         <img src="../assets/img/pfp-default.png" class="pfp" alt="pfp">
         <span class="username">${stream.user.username}</span>
       </div>
+      <div class="viewer-count-badge">👀 ${viewerCount}</div>
     `;
 
   // On click → open stream viewer page
@@ -128,4 +136,21 @@ function removeStreamFromList(streamId) {
 
 function streamExists(streamId) {
   return streamsArray.some((item) => item.id === streamId);
+}
+
+function updateStreamInList(stream) {
+  const item = streamsArray.find((i) => i.id === stream.id);
+  if (item) {
+    const viewerCount = stream.viewers || 0;
+    const viewerBadge = item.element.querySelector('.viewer-count-badge');
+    if (viewerBadge) {
+      viewerBadge.textContent = `👁️ ${viewerCount}`;
+    } else {
+      // Add viewer count badge if it doesn't exist
+      const badge = document.createElement('div');
+      badge.classList.add('viewer-count-badge');
+      badge.textContent = `👁️ ${viewerCount}`;
+      item.element.appendChild(badge);
+    }
+  }
 }

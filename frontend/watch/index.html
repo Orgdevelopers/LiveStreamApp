@@ -10,7 +10,9 @@
 
   <body>
     <div class="stream-container">
-      <div class="video-area" id="videoArea"></div>
+      <div class="video-area" id="videoArea">
+        <div class="viewer-count" id="viewerCount">👁️ 0 viewers</div>
+      </div>
 
       <div class="chat-overlay" id="chatOverlay">
         <!-- Messages will appear here -->
@@ -42,5 +44,7 @@
     <!-- socket and stomp impl -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
   </footer>
 </html>

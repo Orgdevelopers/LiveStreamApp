@@ -24,5 +24,9 @@ public interface LivestreamServices {
     LiveStreamEntity endStream(Long id);
 
     void delete(Long id);
+
+    LiveStreamEntity incrementViewerCount(Long streamId);
+
+    LiveStreamEntity decrementViewerCount(Long streamId);
     
 }

@@ -18,11 +18,12 @@ public class LiveStreamDto {
 
     private String banner;
 
-    private Integer viewers;
 
     private Boolean active;
 
     private LocalDateTime updated;
+    
+    private Integer viewerCount;
 
     private LocalDateTime created;
     
