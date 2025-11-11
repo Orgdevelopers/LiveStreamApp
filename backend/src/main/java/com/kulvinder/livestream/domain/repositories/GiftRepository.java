@@ -1,5 +1,9 @@
 package com.kulvinder.livestream.domain.repositories;
 
-public class GiftRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.kulvinder.livestream.domain.models.entities.GiftEntity;
+
+public interface GiftRepository extends JpaRepository<GiftEntity, Long> {
 
 }

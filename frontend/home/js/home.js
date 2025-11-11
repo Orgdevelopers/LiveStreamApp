@@ -104,7 +104,7 @@ function addStreamToList(stream) {
         <img src="../assets/img/pfp-default.png" class="pfp" alt="pfp">
         <span class="username">${stream.user.username}</span>
       </div>
-      <div class="viewer-count-badge">👀 ${viewerCount}</div>
+      <div class="viewer-count-badge">👁️ ${viewerCount}</div>
     `;
 
   // On click → open stream viewer page

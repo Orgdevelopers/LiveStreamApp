@@ -4,8 +4,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.kulvinder.livestream.domain.models.dtos.GiftDto;
 import com.kulvinder.livestream.domain.models.dtos.LiveStreamDto;
 import com.kulvinder.livestream.domain.models.dtos.UserDto;
+import com.kulvinder.livestream.domain.models.entities.GiftEntity;
 import com.kulvinder.livestream.domain.models.entities.LiveStreamEntity;
 import com.kulvinder.livestream.domain.models.entities.UserEntity;
 import com.kulvinder.livestream.mappers.Mapper;
@@ -17,6 +19,11 @@ public class ModelMapperConfig {
     @Bean
     public ModelMapper modelMapper(){
         return new ModelMapper();
+    }
+    
+    @Bean
+    public Mapper<GiftEntity,GiftDto> giftMapper(ModelMapper mapper){
+        return new GenericMapperImpl<>(mapper, GiftEntity.class, GiftDto.class);
     }
 
     @Bean
