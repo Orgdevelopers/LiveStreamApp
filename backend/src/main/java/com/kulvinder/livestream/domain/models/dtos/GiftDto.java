@@ -17,6 +17,11 @@ public class GiftDto {
 
     private String image;
 
-    private Integer price;
+    private String animation;
+
+    private boolean isAnimated;
+
+    private Double price;
+
 
 }

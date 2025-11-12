@@ -17,6 +17,10 @@ public class ChatDto {
 
     private LiveStreamDto liveStream;
 
+    private GiftDto gift;
+
+    private Boolean isGift;
+
     private UserDto sender;
 
     private String msg;
