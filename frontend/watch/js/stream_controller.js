@@ -36,6 +36,12 @@ function handleServerMsg(msg) {
   const sender = msg.sender;
   const messageTxt = msg.msg;
 
+  if(msg.isGift){
+    addGiftMsg(sender.username, msg.gift.name);
+  }else{
+    addChatMsg(sender.username, messageTxt);
+  }
+
   addChatMsg(sender.username, messageTxt);
 }
 
