@@ -38,11 +38,36 @@ function handleServerMsg(msg) {
 
   if(msg.isGift){
     addGiftMsg(sender.username, msg.gift.name);
+    if(msg.gift.isAnimated){
+      playGiftAnimation(sender,msg.gift);
+    }
   }else{
     addChatMsg(sender.username, messageTxt);
   }
 
   addChatMsg(sender.username, messageTxt);
+}
+
+function playGiftAnimation(sender, gift) {
+  const animation_container = document.getElementById('animation-container');
+  animation_container.classList.add('active');
+  animation_container.innerHTML = `<dotlottie-wc src="${gift.animation}" speed="1" style="width: 300px; height: 300px" mode="forward" loop autoplay></dotlottie-wc>`;
+  const dotlottie = animation_container.querySelector('dotlottie-wc');
+  dotlottie.addEventListener('loaded', () => {
+    console.log('loaded');
+    dotlottie.addEventListener('loopComplete', () => {
+      console.log('loop complete');
+      animation_container.classList.remove('active');
+      animation_container.innerHTML = '';
+    });
+  });
+}
+
+function addGiftMsg(user, gift) {
+  const div = document.createElement('div');
+  div.classList.add('gift-msg');
+  div.textContent = `${user} sent a ${gift}`;
+  chatOverlay.appendChild(div);
 }
 
 function addChatMsg(user, msg) {
