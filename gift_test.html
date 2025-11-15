@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gift Test</title>
+  </head>
+  <body>
+    <div id="animation-container"></div>
+    <button onclick="playGiftAnimation()">Add Gift Animation</button>
+    <button onclick="startanimation()">Play Gift Animation</button>
+  </body>
+
+  <script
+    src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.7.1/dist/dotlottie-wc.js"
+    type="module"
+  ></script>
+
+  <script>
+    function playGiftAnimation() {
+      const animation_container = document.getElementById(
+        "animation-container"
+      );
+      animation_container.classList.add("active");
+      animation_container.innerHTML = `<dotlottie-wc class="gift-lottie" src="http://localhost/LiveStreamApp/gift.lottie" speed="1" mode="forward" autoplay></dotlottie-wc>`;
+      const dotLottieElement =
+        animation_container.querySelector("dotlottie-wc").dotLottie;
+
+      dotLottieElement.addEventListener("ready", () => {
+        console.log("DotLottie element is ready.");
+        // You can access the DotLottie instance here if needed
+        // const dotLottie = dotLottieElement.dotLottie;
+      });
+
+      dotLottieElement.addEventListener("load", () => {
+        console.log("DotLottie animation has loaded.");
+      });
+
+      dotLottieElement.addEventListener("play", () => {
+        console.log("Animation started playing.");
+      });
+
+      dotLottieElement.addEventListener("pause", () => {
+        console.log("Animation paused.");
+      });
+
+      dotLottieElement.addEventListener("complete", () => {
+        console.log("Animation completed.");
+      });
+
+      dotLottieElement.addEventListener("frame", (event) => {
+        // const { currentFrame } = event.detail; // Access event details for frame throws error if not autoplay / fram 0 error
+        // console.log(`Current frame: ${currentFrame}`);
+        //console.log(event);
+      });
+
+      dotLottieElement.addEventListener("loadError", (event) => {
+        const { error } = event.detail; // Access event details for error
+        console.error("Error loading animation:", error);
+      });
+
+      dotLottieElement.addEventListener("loop", (event) => {
+        const { loopCount } = event.detail; // Access event details for loop count
+        console.log(`Animation looped. Loop count: ${loopCount}`);
+      });
+    }
+
+    function startanimation() {
+      const animation_container = document.getElementById(
+        "animation-container"
+      );
+      const dotLottieElement =
+        animation_container.querySelector("dotlottie-wc");
+      dotLottieElement.dotLottie.play();
+    }
+  </script>
+</html>

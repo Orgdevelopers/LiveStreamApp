@@ -51,15 +51,45 @@ function handleServerMsg(msg) {
 function playGiftAnimation(sender, gift) {
   const animation_container = document.getElementById('animation-container');
   animation_container.classList.add('active');
-  animation_container.innerHTML = `<dotlottie-wc src="${gift.animation}" speed="1" style="width: 300px; height: 300px" mode="forward" loop autoplay></dotlottie-wc>`;
-  const dotlottie = animation_container.querySelector('dotlottie-wc');
-  dotlottie.addEventListener('loaded', () => {
-    console.log('loaded');
-    dotlottie.addEventListener('loopComplete', () => {
-      console.log('loop complete');
-      animation_container.classList.remove('active');
-      animation_container.innerHTML = '';
-    });
+  animation_container.innerHTML = `<dotlottie-wc class="animation-lottie" src="${gift.animation}" speed="1" mode="forward" autoplay></dotlottie-wc>`;
+  const dotLottieElement = animation_container.querySelector('dotlottie-wc').dotLottie;
+  dotLottieElement.addEventListener("ready", () => {
+    log("DotLottie element is ready.");
+    // You can access the DotLottie instance here if needed
+    // const dotLottie = dotLottieElement.dotLottie;
+  });
+
+  dotLottieElement.addEventListener("load", () => {
+    log("DotLottie animation has loaded.");
+  });
+
+  dotLottieElement.addEventListener("play", () => {
+    log("Animation started playing.");
+  });
+
+  dotLottieElement.addEventListener("pause", () => {
+    log("Animation paused.");
+  });
+
+  dotLottieElement.addEventListener("complete", () => {
+    log("Animation completed.");
+    
+  });
+
+  dotLottieElement.addEventListener("frame", (event) => {
+    // const { currentFrame } = event.detail; // Access event details for frame throws error if not autoplay / fram 0 error
+    // console.log(`Current frame: ${currentFrame}`);
+    //console.log(event);
+  });
+
+  dotLottieElement.addEventListener("loadError", (event) => {
+    const { error } = event.detail; // Access event details for error
+    console.error("Error loading animation:", error);
+  });
+
+  dotLottieElement.addEventListener("loop", (event) => {
+    const { loopCount } = event.detail; // Access event details for loop count
+    log(`Animation looped. Loop count: ${loopCount}`);
   });
 }
 
