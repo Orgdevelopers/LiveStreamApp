@@ -36,82 +36,101 @@ function handleServerMsg(msg) {
   const sender = msg.sender;
   const messageTxt = msg.msg;
 
-  if(msg.isGift){
+  if (msg.isGift) {
     addGiftMsg(sender.username, msg.gift.name);
-    if(msg.gift.isAnimated){
-      playGiftAnimation(sender,msg.gift);
+    if (msg.gift.isAnimated) {
+      playGiftAnimation(sender, msg.gift);
     }
-  }else{
+  } else {
     addChatMsg(sender.username, messageTxt);
   }
 
   addChatMsg(sender.username, messageTxt);
 }
 
+let isAnimationPlaying = false;
+let animationQueue = [];
+
 function playGiftAnimation(sender, gift) {
-  const animation_container = document.getElementById('animation-container');
-  animation_container.classList.add('active');
-  animation_container.innerHTML = `<dotlottie-wc class="animation-lottie" src="${gift.animation}" speed="1" mode="forward" autoplay></dotlottie-wc>`;
-  const dotLottieElement = animation_container.querySelector('dotlottie-wc').dotLottie;
-  dotLottieElement.addEventListener("ready", () => {
-    log("DotLottie element is ready.");
-    // You can access the DotLottie instance here if needed
-    // const dotLottie = dotLottieElement.dotLottie;
+  animationQueue.push({ sender, gift });
+  processQueue();
+}
+
+function processQueue() {
+  if (isAnimationPlaying) return;
+
+  if (animationQueue.length === 0) return;
+
+  const { sender, gift } = animationQueue.shift();
+
+  startAnimation(sender, gift);
+}
+
+function startAnimation(sender, gift) {
+  const animation_container = document.getElementById("animation-container");
+
+  isAnimationPlaying = true;
+  animation_container.classList.add("active");
+
+  animation_container.innerHTML = "";
+  const el = document.createElement("dotlottie-wc");
+
+  el.className = "animation-lottie";
+  el.setAttribute("src", gift.animation);
+  el.setAttribute("autoplay", "");
+  el.setAttribute("mode", "forward");
+
+  animation_container.appendChild(el);
+
+  const dot = el.dotLottie;
+
+  dot.addEventListener("play", () => {
+    log("Animation started");
   });
 
-  dotLottieElement.addEventListener("load", () => {
-    log("DotLottie animation has loaded.");
+  dot.addEventListener("complete", () => {
+    log("Animation completed");
+
+    animation_container.innerHTML = "";
+    animation_container.classList.remove("active");
+
+    isAnimationPlaying = false;
+
+    processQueue();
   });
 
-  dotLottieElement.addEventListener("play", () => {
-    log("Animation started playing.");
-  });
+  dot.addEventListener("loadError", (event) => {
+    console.error("Error loading animation:", event.detail.error);
 
-  dotLottieElement.addEventListener("pause", () => {
-    log("Animation paused.");
-  });
-
-  dotLottieElement.addEventListener("complete", () => {
-    log("Animation completed.");
-    
-  });
-
-  dotLottieElement.addEventListener("frame", (event) => {
-    // const { currentFrame } = event.detail; // Access event details for frame throws error if not autoplay / fram 0 error
-    // console.log(`Current frame: ${currentFrame}`);
-    //console.log(event);
-  });
-
-  dotLottieElement.addEventListener("loadError", (event) => {
-    const { error } = event.detail; // Access event details for error
-    console.error("Error loading animation:", error);
-  });
-
-  dotLottieElement.addEventListener("loop", (event) => {
-    const { loopCount } = event.detail; // Access event details for loop count
-    log(`Animation looped. Loop count: ${loopCount}`);
+    isAnimationPlaying = false;
+    processQueue();
   });
 }
 
+
 function addGiftMsg(user, gift) {
-  const div = document.createElement('div');
-  div.classList.add('gift-msg');
+  const div = document.createElement("div");
+  div.classList.add("gift-msg");
   div.textContent = `${user} sent a ${gift}`;
   chatOverlay.appendChild(div);
 }
 
 function addChatMsg(user, msg) {
-  const div = document.createElement('div');
-  div.classList.add('chat-msg');
+  const div = document.createElement("div");
+  div.classList.add("chat-msg");
   div.textContent = `${user}: ${msg}`;
   chatOverlay.appendChild(div);
 
   // Auto-scroll to bottom if user is near the bottom
-  if (chatOverlay.scrollHeight - chatOverlay.scrollTop - chatOverlay.clientHeight < 50) {
+  if (
+    chatOverlay.scrollHeight -
+      chatOverlay.scrollTop -
+      chatOverlay.clientHeight <
+    50
+  ) {
     chatOverlay.scrollTop = chatOverlay.scrollHeight;
   }
 }
-
 
 //server broadcast msg optional
 setTimeout(
