@@ -6,6 +6,7 @@
 
     <title>Live Stream</title>
     <link rel="stylesheet" href="css/watch.css" />
+    <link rel="stylesheet" href="../css/snackbar.css" />
   </head>
 
   <body>
@@ -23,6 +24,7 @@
         <button class="control-btn" id="camBtn">🎥</button>
         <button class="control-btn" id="endBtn">⛔</button>
         <button class="control-btn" id="chatBtn">💬</button>
+        <button class="control-btn" id="giftBtn">🎁</button>
       </div>
 
       <div class="chat-input-container" id="chatInputContainer">
@@ -36,12 +38,37 @@
       </div>
     </div>
     <div id="animation-container" class="animation-container"></div>
+
+    <!-- Gift Dialog -->
+    <div class="gift-dialog-overlay" id="giftDialogOverlay">
+      <div class="gift-dialog" id="giftDialog">
+        <div class="gift-dialog-header">
+          <h2>Send a Gift</h2>
+          <button class="gift-dialog-close" id="giftDialogClose">×</button>
+        </div>
+        <div class="gift-dialog-content">
+          <div class="gift-balance" id="giftBalance">
+            <span class="balance-label">Your Coins:</span>
+            <span class="balance-value" id="balanceValue">0</span>
+          </div>
+          <div class="gifts-grid" id="giftsGrid">
+            <!-- Gifts will be loaded here -->
+          </div>
+        </div>
+        <div class="gift-dialog-footer">
+          <button class="gift-send-btn" id="giftSendBtn" disabled>Send Gift</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="snackbar">msg</div>
   </body>
 
   <footer>
     <script src="js/watch.js"></script>
     <script src="../js/baseScript.js"></script>
     <script src="js/stream_controller.js"></script>
+    <script src="js/gift_logic.js"></script>
     <!-- socket and stomp impl -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>

@@ -227,9 +227,210 @@ body {
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
   z-index: 1000;
+  display: none;
+  pointer-events: none;
+}
+
+.animation-container.active {
+  display: block;
+  pointer-events: auto;
 }
 
 .animation-lottie{
   width: 100%;
   height: 100%;
+}
+
+/* Gift Dialog Styles */
+.gift-dialog-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 2000;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(5px);
+}
+
+.gift-dialog {
+  background: linear-gradient(to bottom, #1a1a2e, #16213e);
+  border-radius: 20px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.gift-dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gift-dialog-header h2 {
+  margin: 0;
+  color: white;
+  font-size: 24px;
+}
+
+.gift-dialog-close {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 32px;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.gift-dialog-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.gift-dialog-content {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.gift-balance {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.balance-label {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+}
+
+.balance-value {
+  color: #ffd700;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.gifts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.gift-item {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.gift-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.gift-item.selected {
+  border-color: #1e90ff;
+  background: rgba(30, 144, 255, 0.2);
+  box-shadow: 0 0 15px rgba(30, 144, 255, 0.5);
+}
+
+.gift-image-container {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.gift-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.gift-name {
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 4px;
+  word-wrap: break-word;
+}
+
+.gift-price {
+  color: #ffd700;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.gift-dialog-footer {
+  padding: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: center;
+}
+
+.gift-send-btn {
+  background: #1e90ff;
+  border: none;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  min-width: 150px;
+}
+
+.gift-send-btn:hover:not(:disabled) {
+  background: #1873cc;
+  transform: scale(1.05);
+}
+
+.gift-send-btn:disabled {
+  background: rgba(255, 255, 255, 0.2);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.gift-dialog-content .loading,
+.gift-dialog-content .error {
+  text-align: center;
+  color: white;
+  padding: 40px 20px;
+  font-size: 16px;
+}
+
+.gift-dialog-content .error {
+  color: #e23636;
 }

@@ -1,0 +1,34 @@
+{
+  "id": 2,
+  "liveStream": {
+    "id": 2,
+    "user": {
+      "id": 3,
+      "username": "kullu",
+      "profile_pic": null,
+      "coins": 1000
+    },
+    "banner": "https://picsum.photos/400/600",
+    "active": true,
+    "updated": null,
+    "viewerCount": 2,
+    "created": "2025-11-02T02:21:45"
+  },
+  "gift": {
+    "id": 1,
+    "name": "Rose",
+    "image": "/assets/gifts/images/rose_28604482.png",
+    "animation": "/assets/gifts/animations/rose_9a412f40.lottie",
+    "price": 5.0,
+    "animated": true
+  },
+  "isGift": true,
+  "sender": {
+    "id": 3,
+    "username": "kullu",
+    "profile_pic": null,
+    "coins": 1000
+  },
+  "msg": "Rose",
+  "created": "2025-11-19T14:00:47.6287643"
+}

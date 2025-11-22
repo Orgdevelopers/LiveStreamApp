@@ -1,12 +1,14 @@
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 let stream_id = 0;
+window.stream_id = stream_id; // Expose globally for gift_logic.js
 
 
 window.addEventListener("load",()=>{
     if (validateSession() && urlParams.has("id")) {
         //load
         stream_id = urlParams.get("id");
+        window.stream_id = stream_id; // Update global reference
         // Fetch initial stream data to get viewer count
         fetchStreamData(stream_id);
         joinLiveStream();
@@ -47,11 +49,13 @@ function joinLiveStream(){
 
 let socket = null;
 let stomp = null;
+window.stomp = stomp; // Expose globally for gift_logic.js
 let hasJoined = false;
 
 function connectToLiveSocket(retryCount = 0) {
   socket = new SockJS(LIVESTREAMLIST_SOCKET_URL);
   stomp = Stomp.over(socket);
+  window.stomp = stomp; // Update global reference
 
   stomp.connect(
     {},

@@ -9,13 +9,16 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import com.kulvinder.livestream.domain.models.dtos.ChatDto;
+import com.kulvinder.livestream.domain.models.dtos.GiftDto;
 import com.kulvinder.livestream.domain.models.dtos.LiveStreamDto;
 import com.kulvinder.livestream.domain.models.dtos.UserDto;
+import com.kulvinder.livestream.domain.models.entities.GiftEntity;
 import com.kulvinder.livestream.domain.models.entities.LiveStreamEntity;
 import com.kulvinder.livestream.domain.models.entities.UserEntity;
 import com.kulvinder.livestream.domain.services.LivestreamServices;
 import com.kulvinder.livestream.domain.services.StreamBroadcastService;
 import com.kulvinder.livestream.domain.services.UserServices;
+import com.kulvinder.livestream.domain.services.GiftServices;
 import com.kulvinder.livestream.mappers.Mapper;
 
 @CrossOrigin("*")
@@ -30,6 +33,8 @@ public class StreamSocketController {
     private Mapper<LiveStreamEntity, LiveStreamDto> liveStreamMapper;
     @Autowired
     private Mapper<UserEntity, UserDto> userMapper;
+    @Autowired
+    private Mapper<GiftEntity, GiftDto> giftMapper;
 
     // services
     @Autowired
@@ -38,6 +43,8 @@ public class StreamSocketController {
     private StreamBroadcastService streamBroadcastService;
     @Autowired
     private UserServices userServices;
+    @Autowired
+    private GiftServices giftServices;
 
     // msg mapping for live chat
     @MessageMapping("/liveStreams/{id}/chat")
@@ -47,11 +54,20 @@ public class StreamSocketController {
         LiveStreamDto liveStreamDto = liveStreamMapper.MapTo(stream.get());
 
         if (stream.isPresent() && sender.isPresent()) {
+            GiftDto giftDto = null;
+            if (sentDto.getIsGift() != null && sentDto.getIsGift()) {
+                Optional<GiftEntity> giftEntity = giftServices.findById(sentDto.getGift().getId());
+                if (giftEntity.isPresent()) {
+                    giftDto = giftMapper.MapTo(giftEntity.get());
+                }
+            }
             ChatDto chat = ChatDto.builder()
                         .id(id)
                         .liveStream(liveStreamDto)
                         .sender(userMapper.MapTo(sender.get()))
                         .msg(sentDto.getMsg())
+                        .isGift(sentDto.getIsGift())
+                        .gift(giftDto)
                         .created(LocalDateTime.now())
                         .build();
 

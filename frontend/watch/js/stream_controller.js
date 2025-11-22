@@ -36,16 +36,16 @@ function handleServerMsg(msg) {
   const sender = msg.sender;
   const messageTxt = msg.msg;
 
-  if (msg.isGift) {
+  if (msg.isGift != null && msg.isGift) {
     addGiftMsg(sender.username, msg.gift.name);
-    if (msg.gift.isAnimated) {
+    if (msg.gift.animated) {
       playGiftAnimation(sender, msg.gift);
     }
   } else {
     addChatMsg(sender.username, messageTxt);
   }
 
-  addChatMsg(sender.username, messageTxt);
+  //addChatMsg(sender.username, messageTxt);
 }
 
 let isAnimationPlaying = false;
@@ -76,7 +76,9 @@ function startAnimation(sender, gift) {
   const el = document.createElement("dotlottie-wc");
 
   el.className = "animation-lottie";
-  el.setAttribute("src", gift.animation);
+  // Convert relative URL to absolute URL using SERVER_URL
+  const animationUrl = gift.animation ? (gift.animation.startsWith('http') ? gift.animation : BASE_URL.replace(/\/$/, '') + gift.animation) : '';
+  el.setAttribute("src", animationUrl);
   el.setAttribute("autoplay", "");
   el.setAttribute("mode", "forward");
 

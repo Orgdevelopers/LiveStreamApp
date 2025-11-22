@@ -1,13 +1,15 @@
 //constants
 
-// const SERVER_URL = "http://localhost:8080/";
-// const LIVESTREAMLIST_SOCKET_URL = "http://localhost:8080/liveStreams"; //at-surgeon.gl.at.ply.gg:36199
-const SERVER_URL = "http://at-surgeon.gl.at.ply.gg:36199/";
-const LIVESTREAMLIST_SOCKET_URL = "http://at-surgeon.gl.at.ply.gg:36199/liveStreams";
+const SERVER_URL = "http://localhost:8080/";
+const BASE_URL = "http://localhost/LiveStreamApp/backend/"; //this is here because i am hosting API and frontend on different ports 8080 and 80 this is only for image and animation loading
+const LIVESTREAMLIST_SOCKET_URL = "http://localhost:8080/liveStreams"; //at-surgeon.gl.at.ply.gg:36199
+// const SERVER_URL = "http://at-surgeon.gl.at.ply.gg:36199/";
+// const LIVESTREAMLIST_SOCKET_URL = "http://at-surgeon.gl.at.ply.gg:36199/liveStreams";
 
 const LOGIN_URL = SERVER_URL + "auth/login";
 const SIGNUP_URL = SERVER_URL + "auth/signup";
 const LIVESTREAM_LIST_URL = SERVER_URL + "livestreams/active";
+const GIFTS_URL = SERVER_URL + "gifts";
 
 //
 const LOGS_ENABLE = true;

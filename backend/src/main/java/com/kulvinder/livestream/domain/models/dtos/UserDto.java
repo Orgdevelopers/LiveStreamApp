@@ -25,7 +25,12 @@ public class UserDto {
     
     private String profile_pic;
 
+    private Integer coins;
+
+    @JsonIgnore
     private LocalDateTime updated;
+    
+    @JsonIgnore
     private LocalDateTime created;
 
 }

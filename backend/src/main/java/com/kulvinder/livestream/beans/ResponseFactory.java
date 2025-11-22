@@ -71,4 +71,11 @@ public class ResponseFactory {
 
     }
 
+    public static <T> ResponseEntity<ApiResponse<T>> error(String msg) {
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ApiResponse<>(Constants.REQUEST_ERROR,msg, null));
+
+    }
+
 }

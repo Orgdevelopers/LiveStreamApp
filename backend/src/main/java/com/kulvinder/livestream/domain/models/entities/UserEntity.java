@@ -34,6 +34,8 @@ public class UserEntity {
 
     private String profile_pic;
 
+    private Integer coins;
+
     @CreationTimestamp
     @Column(name = "updated",updatable = true)
     private LocalDateTime updated;

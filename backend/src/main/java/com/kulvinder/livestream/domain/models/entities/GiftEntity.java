@@ -1,5 +1,6 @@
 package com.kulvinder.livestream.domain.models.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +26,12 @@ public class GiftEntity {
     private String name;
 
     private String image;
-    
-    private Integer price;
+
+    private String animation;
+
+    @Column(columnDefinition = "TINYINT(1)")
+    private Boolean isAnimated;
+
+    private Double price;
+
 }
